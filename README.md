@@ -1,1 +1,10 @@
 # detect-registry-key-modified
+This line sets the $keyPath variable to the Windows Registry key to monitor for changes. In this case, the script is monitoring the "Run" key under the "CurrentVersion" subkey of the "Windows\Microsoft\SOFTWARE" key .
+
+These lines set up an event filter and query to monitor the specified registry key for changes. The $filter variable is set to a new instance of the Microsoft.Win32.RegistryKeyChangeEvent class, which represents a registry key change event. The $query variable is set to a new instance of the System.Management.EventQuery class, which is used to specify the conditions for the event query. The EventClassName property is set to "__InstanceModificationEvent", which is the WMI event class for registry key modifications. The WithinInterval property is set to "00:00:01", which specifies that the script should check for events every 1 second. The Condition property is set to the $filter variable's QueryString property, which specifies the conditions for the event query .
+
+This line creates a new instance of the System.Management.ManagementEventWatcher class, which is used to watch for the specified event query. The $query variable is set as the Query property of the watcher.
+This line starts the event watcher and redirects any output to Out-Null, which discards the output. This allows the script to continue running while the watcher is active.
+
+These lines create a loop that waits for the next event from the watcher and displays an alert message when a registry key modification is detected. The $event variable is set to the next event returned by the watcher's WaitForNextEvent() method. The $message variable is set to a string that includes the modified registry key's name and the username of the user who modified it. The message is displayed using the Write-Host cmdlet. The script can also send an alert through email, text message, or other means, as demonstrated by the example of sending an email alert using the Send-MailMessage cmdlet.
+
